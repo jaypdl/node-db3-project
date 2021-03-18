@@ -95,20 +95,22 @@ async function findById(scheme_id) { // EXERCISE B
     .leftJoin('steps as st', 'sc.scheme_id', '=', 'st.scheme_id')
     .where('sc.scheme_id', scheme_id)
     .orderBy('st.step_number', 'asc')
-  const schemeProcessed = {
-    scheme_id: schemeRaw[0].scheme_id,
-    scheme_name: schemeRaw[0].scheme_name,
-    steps: schemeRaw[0].step_id
-      ? schemeRaw.map((entry) => {
-          return {
-            step_id: entry.step_id,
-            step_number: entry.step_number,
-            instructions: entry.instructions
-          }
-        })
-      : []
-  }
-  return schemeProcessed
+  if (schemeRaw.length > 0) {
+    const schemeProcessed = {
+      scheme_id: schemeRaw[0].scheme_id,
+      scheme_name: schemeRaw[0].scheme_name,
+      steps: schemeRaw[0].step_id
+        ? schemeRaw.map((entry) => {
+            return {
+              step_id: entry.step_id,
+              step_number: entry.step_number,
+              instructions: entry.instructions
+            }
+          })
+        : []
+      }
+      return schemeProcessed
+  } else null
 }
 
 function findSteps(scheme_id) { // EXERCISE C
